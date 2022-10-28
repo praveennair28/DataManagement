@@ -1,0 +1,31 @@
+﻿@page
+@model TestApp.Pages.Shared.clients.clientModel
+@{
+}
+<br />
+<a class="btn btn-primary btn-sm" href="/clients/client">New client</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+           @* <th>Created</th>
+            <th>Action</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.clients)
+        {
+            <tr>
+                <td>@item.id</td>
+                <td>@item.name</td>
+                <td>@item.email</td>
+                <td>@item.phone</td>
+                <td>@item.address</td>
+            </tr>
+        }
+    </tbody>
+</table>
