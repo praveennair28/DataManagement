@@ -42,7 +42,7 @@ namespace TestApp.Pages.Shared.clients
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Exception:", ex);
+                System.Diagnostics.Trace.TraceError("Error!!", ex.Message);
             }
 
         }
