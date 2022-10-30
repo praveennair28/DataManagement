@@ -1,25 +1,38 @@
-var builder = WebApplication.CreateBuilder(args);
+using System.Diagnostics.CodeAnalysis;
+using Serilog;
 
-// Add services to the container.
-builder.Services.AddRazorPages();
 
-var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+namespace DataManagement
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    [ExcludeFromCodeCoverage]
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureLogging(Logger)
+                    .UseStartup<Startup>();
+                });
+
+
+
+        public static void Logger(WebHostBuilderContext ctx, ILoggingBuilder logging)
+        {
+            if (ctx == null || logging == null)
+            {
+                return;
+            }
+            logging.ClearProviders();
+            logging.AddConsole();
+            logging.AddAzureWebAppDiagnostics();
+        }
+
+    }
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapRazorPages();
-
-app.Run();

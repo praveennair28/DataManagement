@@ -9,18 +9,24 @@ namespace TestApp.Pages.Shared.clients
     {
        public List<clientInfo> clients = new List<clientInfo>();
        private IConfiguration _configuration;
-        public clientModel(IConfiguration configuration)
+       private ILogger<clientModel> _logger;
+
+        public clientModel(IConfiguration configuration, ILogger<clientModel> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
         public void OnGet()
         {
             try
             {
-                string conn = _configuration.GetConnectionString("myDb");// "Data Source=localhost;Initial Catalog=mystore;Integrated Security=True";
+
+                string conn = _configuration.GetConnectionString("myDb");
+                _logger.LogInformation("client connection..!!", conn);
                 string sql = "select * from clients";
                 using(SqlConnection connection = new SqlConnection(conn))
                 {
+                    _logger.LogInformation("client loading..!!");
                     connection.Open();
                     using(SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -43,6 +49,7 @@ namespace TestApp.Pages.Shared.clients
             catch(Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error!!", ex.Message);
+                _logger.LogError("client loading error!!", ex.Message);
             }
 
         }
