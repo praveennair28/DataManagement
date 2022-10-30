@@ -22,7 +22,7 @@ namespace TestApp.Pages.Shared.clients
             {
 
                 string conn = _configuration.GetConnectionString("myDb");
-                _logger.LogInformation("client connection..!!", conn);
+                _logger.LogInformation("client connection..!!"+conn+":");
                 string sql = "select * from clients";
                 using(SqlConnection connection = new SqlConnection(conn))
                 {
@@ -34,6 +34,8 @@ namespace TestApp.Pages.Shared.clients
                         {
                             while(reader.Read())
                             {
+                                _logger.LogInformation("client reading..!!");
+
                                 clientInfo info = new clientInfo();
                                 info.id = ""+reader.GetInt32(0);
                                 info.name = reader.GetString(1);
@@ -48,8 +50,7 @@ namespace TestApp.Pages.Shared.clients
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Trace.TraceError("Error!!", ex.Message);
-                _logger.LogError("client loading error!!", ex.Message);
+                _logger.LogError("client loading error!!"+ex.Message+":"+ex.StackTrace);
             }
 
         }
